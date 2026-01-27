@@ -1,1 +1,220 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Archivio Punti Raccolta Sangue</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- PIN Login Screen -->
+    <div id="pinScreen" class="pin-screen">
+        <div class="pin-container">
+            <div class="pin-header">
+                <h1>🩸 Raccolta Sangue</h1>
+                <p>Inserisci il PIN per accedere</p>
+            </div>
+            <div class="pin-display">
+                <div class="pin-dots">
+                    <span class="pin-dot"></span>
+                    <span class="pin-dot"></span>
+                    <span class="pin-dot"></span>
+                    <span class="pin-dot"></span>
+                    <span class="pin-dot"></span>
+                    <span class="pin-dot"></span>
+                </div>
+            </div>
+            <div class="pin-keypad">
+                <button class="pin-key" onclick="addPinDigit('1')">1</button>
+                <button class="pin-key" onclick="addPinDigit('2')">2</button>
+                <button class="pin-key" onclick="addPinDigit('3')">3</button>
+                <button class="pin-key" onclick="addPinDigit('4')">4</button>
+                <button class="pin-key" onclick="addPinDigit('5')">5</button>
+                <button class="pin-key" onclick="addPinDigit('6')">6</button>
+                <button class="pin-key" onclick="addPinDigit('7')">7</button>
+                <button class="pin-key" onclick="addPinDigit('8')">8</button>
+                <button class="pin-key" onclick="addPinDigit('9')">9</button>
+                <button class="pin-key pin-key-empty"></button>
+                <button class="pin-key" onclick="addPinDigit('0')">0</button>
+                <button class="pin-key pin-key-delete" onclick="deletePinDigit()">⌫</button>
+            </div>
+            <div class="pin-error" id="pinError"></div>
+            <div class="pin-hint">PIN predefinito: 000000</div>
+        </div>
+    </div>
 
+    <!-- Main App -->
+    <div id="mainApp" class="main-app" style="display:none;">
+        <div class="container">
+            <header>
+                <h1>🩸 Archivio Punti Raccolta Sangue</h1>
+                <p>Gestione punti di raccolta esterni nella regione</p>
+            </header>
+
+            <div class="toolbar">
+                <div class="search-box">
+                    <input type="text" id="searchInput" placeholder="🔍 Cerca per nome...">
+                </div>
+                <button class="btn btn-primary" id="addBtn">➕ Aggiungi Punto</button>
+                <button class="btn btn-secondary" id="exportBtn">💾 Esporta Dati</button>
+                <input type="file" id="importInput" accept=".json" style="display:none;">
+                <button class="btn btn-secondary" id="importBtn">📂 Importa Dati</button>
+                <button class="btn btn-secondary" id="settingsBtn">⚙️ Impostazioni</button>
+                <button class="btn btn-danger" id="logoutBtn">🔒 Esci</button>
+            </div>
+
+            <div id="puntiList" class="punti-grid"></div>
+
+            <div class="empty-state" id="emptyState" style="display:none;">
+                <p>Nessun punto di raccolta trovato</p>
+                <button class="btn btn-primary" onclick="document.getElementById('addBtn').click()">Aggiungi il primo punto</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal per Aggiungi/Modifica -->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2 id="modalTitle">Aggiungi Punto di Raccolta</h2>
+            <form id="puntoForm">
+                <div class="form-section">
+                    <h3>Informazioni Base</h3>
+                    <div class="form-group">
+                        <label for="nome">Nome Punto di Raccolta *</label>
+                        <input type="text" id="nome" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="associazione">Associazione di Appartenenza *</label>
+                        <input type="text" id="associazione" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="indirizzo">Indirizzo Completo *</label>
+                        <input type="text" id="indirizzo" placeholder="Via, Città, CAP" required>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3>Logistica</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="tipoMezzo">Tipo Mezzo *</label>
+                            <select id="tipoMezzo" required>
+                                <option value="">Seleziona...</option>
+                                <option value="furgone">🚐 Furgone</option>
+                                <option value="autoemoteca">🚑 Autoemoteca</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="orarioPartenza">Orario di Partenza *</label>
+                            <input type="time" id="orarioPartenza" required>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3>Attrezzature</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="lettini">Numero Lettini *</label>
+                            <input type="number" id="lettini" min="0" value="0" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="bilance">Numero Bilance *</label>
+                            <input type="number" id="bilance" min="0" value="0" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="alimentatori">Numero Alimentatori *</label>
+                            <input type="number" id="alimentatori" min="0" value="0" required>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3>Archivio Fotografico</h3>
+                    <div class="form-group">
+                        <label for="fotoInput">Aggiungi Foto</label>
+                        <input type="file" id="fotoInput" accept="image/*" multiple>
+                    </div>
+                    <div id="fotoPreview" class="foto-preview"></div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">Salva</button>
+                    <button type="button" class="btn btn-secondary" id="cancelBtn">Annulla</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Dettaglio -->
+    <div id="detailModal" class="modal">
+        <div class="modal-content modal-detail">
+            <span class="close" id="closeDetail">&times;</span>
+            <div id="detailContent"></div>
+        </div>
+    </div>
+
+    <!-- Modal Impostazioni -->
+    <div id="settingsModal" class="modal">
+        <div class="modal-content">
+            <span class="close" id="closeSettings">&times;</span>
+            <h2>⚙️ Impostazioni</h2>
+            
+            <div class="settings-section">
+                <h3>🔐 Cambio PIN</h3>
+                <p class="settings-description">Il PIN deve essere di 6 cifre numeriche</p>
+                
+                <form id="pinChangeForm">
+                    <div class="form-group">
+                        <label for="oldPin">PIN Attuale *</label>
+                        <input type="password" id="oldPin" maxlength="6" pattern="[0-9]{6}" placeholder="000000" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="newPin">Nuovo PIN *</label>
+                        <input type="password" id="newPin" maxlength="6" pattern="[0-9]{6}" placeholder="Inserisci 6 cifre" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="confirmPin">Conferma Nuovo PIN *</label>
+                        <input type="password" id="confirmPin" maxlength="6" pattern="[0-9]{6}" placeholder="Reinserisci 6 cifre" required>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">Cambia PIN</button>
+                        <button type="button" class="btn btn-secondary" id="cancelPinChange">Annulla</button>
+                    </div>
+                </form>
+            </div>
+
+            <div class="settings-section">
+                <h3>ℹ️ Informazioni App</h3>
+                <div class="info-grid">
+                    <div class="info-item">
+                        <strong>Versione:</strong>
+                        <span>3.0.0</span>
+                    </div>
+                    <div class="info-item">
+                        <strong>Punti Totali:</strong>
+                        <span id="totalPunti">0</span>
+                    </div>
+                    <div class="info-item">
+                        <strong>Ultimo Backup:</strong>
+                        <span id="lastBackup">Mai eseguito</span>
+                    </div>
+                    <div class="info-item">
+                        <strong>Sviluppato per:</strong>
+                        <span>Autoparco - Raccolte Sangue</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="settings-section danger-zone">
+                <h3>⚠️ Zona Pericolosa</h3>
+                <button class="btn btn-danger" onclick="resetApp()">🗑️ Reset Completo App</button>
+                <p class="settings-warning">Elimina tutti i dati e ripristina il PIN predefinito</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

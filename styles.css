@@ -8,6 +8,133 @@ body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
     min-height: 100vh;
+    padding: 0;
+    margin: 0;
+}
+
+/* PIN Screen */
+.pin-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+    z-index: 9999;
+}
+
+.pin-container {
+    background: white;
+    border-radius: 20px;
+    padding: 40px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+    max-width: 400px;
+    width: 90%;
+}
+
+.pin-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.pin-header h1 {
+    color: #dc2626;
+    font-size: 2em;
+    margin-bottom: 10px;
+}
+
+.pin-header p {
+    color: #6b7280;
+    font-size: 1em;
+}
+
+.pin-display {
+    margin-bottom: 30px;
+}
+
+.pin-dots {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
+.pin-dot {
+    width: 16px;
+    height: 16px;
+    border: 3px solid #dc2626;
+    border-radius: 50%;
+    transition: all 0.3s;
+}
+
+.pin-dot.filled {
+    background: #dc2626;
+}
+
+.pin-keypad {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.pin-key {
+    padding: 20px;
+    font-size: 1.5em;
+    font-weight: 600;
+    border: 2px solid #e5e7eb;
+    border-radius: 12px;
+    background: white;
+    color: #374151;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.pin-key:hover {
+    background: #f3f4f6;
+    border-color: #dc2626;
+    transform: scale(1.05);
+}
+
+.pin-key:active {
+    transform: scale(0.95);
+}
+
+.pin-key-empty {
+    border: none;
+    background: transparent;
+    cursor: default;
+}
+
+.pin-key-empty:hover {
+    background: transparent;
+    border: none;
+    transform: none;
+}
+
+.pin-key-delete {
+    background: #fee2e2;
+    color: #dc2626;
+}
+
+.pin-error {
+    text-align: center;
+    color: #dc2626;
+    font-weight: 600;
+    min-height: 24px;
+    margin-bottom: 10px;
+}
+
+.pin-hint {
+    text-align: center;
+    color: #9ca3af;
+    font-size: 0.9em;
+}
+
+/* Main App */
+.main-app {
     padding: 20px;
 }
 
@@ -96,9 +223,18 @@ header p {
     border-color: #d1d5db;
 }
 
+.btn-danger {
+    background: #ef4444;
+    color: white;
+}
+
+.btn-danger:hover {
+    background: #dc2626;
+}
+
 .punti-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
     gap: 25px;
     margin-bottom: 30px;
 }
@@ -130,22 +266,82 @@ header p {
     font-weight: 600;
 }
 
+.indirizzo-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 15px;
+    flex-wrap: wrap;
+}
+
 .punto-card .indirizzo {
     display: inline-flex;
     align-items: center;
     gap: 8px;
     color: #2563eb;
     text-decoration: none;
-    margin-bottom: 15px;
     padding: 8px 12px;
     background: #eff6ff;
     border-radius: 8px;
     font-size: 0.95em;
     transition: all 0.3s;
+    flex: 1;
+    min-width: 200px;
 }
 
 .punto-card .indirizzo:hover {
     background: #dbeafe;
+}
+
+.btn-indicazioni {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 8px 15px;
+    background: #10b981;
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    font-size: 0.9em;
+    font-weight: 600;
+    transition: all 0.3s;
+}
+
+.btn-indicazioni:hover {
+    background: #059669;
+    transform: scale(1.05);
+}
+
+.logistica-info {
+    display: flex;
+    gap: 10px;
+    margin: 15px 0;
+    flex-wrap: wrap;
+}
+
+.logistica-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-size: 0.9em;
+    font-weight: 600;
+}
+
+.mezzo-furgone {
+    background: #dbeafe;
+    color: #1e40af;
+}
+
+.mezzo-autoemoteca {
+    background: #fee2e2;
+    color: #991b1b;
+}
+
+.orario-partenza {
+    background: #f3e8ff;
+    color: #6b21a8;
 }
 
 .attrezzature {
@@ -181,15 +377,6 @@ header p {
     padding: 8px 16px;
     font-size: 0.9em;
     flex: 1;
-}
-
-.btn-danger {
-    background: #ef4444;
-    color: white;
-}
-
-.btn-danger:hover {
-    background: #dc2626;
 }
 
 .btn-info {
@@ -298,7 +485,8 @@ header p {
 }
 
 .form-group input,
-.form-group textarea {
+.form-group textarea,
+.form-group select {
     width: 100%;
     padding: 10px 15px;
     border: 2px solid #e5e7eb;
@@ -308,8 +496,14 @@ header p {
     transition: all 0.3s;
 }
 
+.form-group select {
+    cursor: pointer;
+    background: white;
+}
+
 .form-group input:focus,
-.form-group textarea:focus {
+.form-group textarea:focus,
+.form-group select:focus {
     outline: none;
     border-color: #dc2626;
     box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
@@ -381,6 +575,60 @@ header p {
 
 .form-actions .btn {
     flex: 1;
+}
+
+/* Settings Modal */
+.settings-section {
+    margin-bottom: 30px;
+    padding: 20px;
+    background: #f9fafb;
+    border-radius: 10px;
+}
+
+.settings-section h3 {
+    color: #374151;
+    margin-bottom: 15px;
+    font-size: 1.2em;
+}
+
+.settings-description {
+    color: #6b7280;
+    font-size: 0.95em;
+    margin-bottom: 20px;
+}
+
+.settings-warning {
+    color: #dc2626;
+    font-size: 0.9em;
+    margin-top: 10px;
+    font-weight: 600;
+}
+
+.info-grid {
+    display: grid;
+    gap: 15px;
+}
+
+.info-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 12px;
+    background: white;
+    border-radius: 8px;
+    border: 1px solid #e5e7eb;
+}
+
+.info-item strong {
+    color: #374151;
+}
+
+.info-item span {
+    color: #6b7280;
+}
+
+.danger-zone {
+    background: #fef2f2;
+    border: 2px solid #fecaca;
 }
 
 /* Detail Modal */
@@ -488,6 +736,24 @@ header p {
     
     .form-row {
         grid-template-columns: 1fr;
+    }
+    
+    .indirizzo-container {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .punto-card .indirizzo {
+        min-width: 100%;
+    }
+    
+    .pin-container {
+        padding: 30px 20px;
+    }
+    
+    .pin-key {
+        padding: 15px;
+        font-size: 1.3em;
     }
 }
 

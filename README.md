@@ -2,6 +2,30 @@
 
 Web application per la gestione dei punti di raccolta sangue esterni sparsi nella regione.
 
+## 🌐 Accesso Online
+
+**L'applicazione è disponibile online a questo indirizzo:**
+
+### 👉 [https://sicrida-sketch.github.io/RACCOLTESANGUE/](https://sicrida-sketch.github.io/RACCOLTESANGUE/)
+
+> **Importante:** Assicurati di usare il link esatto con lo slash (/) dopo "github.io" e alla fine dell'URL.
+> 
+> **PIN predefinito:** `000000` (sei zeri)
+
+### 📱 Come salvare l'app sul telefono
+
+#### Su iPhone/iPad:
+1. Apri il link in Safari
+2. Tocca il pulsante "Condividi" (quadrato con freccia)
+3. Scorri verso il basso e tocca "Aggiungi a Home"
+4. Conferma - l'app apparirà nella schermata principale come un'app nativa!
+
+#### Su Android:
+1. Apri il link in Chrome
+2. Tocca il menu (tre puntini)
+3. Seleziona "Aggiungi a schermata Home"
+4. Conferma - l'app apparirà nella schermata principale!
+
 ## ✨ Funzionalità
 
 ### Gestione Punti di Raccolta
@@ -41,7 +65,13 @@ Ogni punto di raccolta contiene:
 
 ## 🚀 Come Usare
 
-### Installazione
+### Accesso Online (Consigliato) 🌐
+**Usa direttamente l'app online:** [https://sicrida-sketch.github.io/RACCOLTESANGUE/](https://sicrida-sketch.github.io/RACCOLTESANGUE/)
+
+Non serve scaricare nulla! L'app funziona direttamente dal browser e puoi salvarla sulla schermata principale del telefono per un accesso rapido.
+
+### Installazione Locale (Opzionale)
+Se preferisci usare l'app offline sul tuo computer:
 1. Scarica i file: `index.html`, `styles.css`, `app.js`
 2. Metti tutti i file nella stessa cartella
 3. Apri `index.html` con un browser web
@@ -97,6 +127,27 @@ I dati vengono salvati automaticamente nel browser (localStorage). Questo signif
 - Per grandi quantità di foto, considera di usare un server esterno
 - I dati demo iniziali vengono caricati al primo avvio
 
+## 🆘 Risoluzione Problemi
+
+### ❌ L'app non si apre / errore 404
+**Verifica di usare l'URL corretto:**
+- ✅ Corretto: `https://sicrida-sketch.github.io/RACCOLTESANGUE/`
+- ❌ Sbagliato: `sicrida-sketch.github.io7raccoltesangue` (manca "https://" e lo slash "/" è sostituito con "7")
+
+**Controlla che:**
+1. Hai inserito correttamente "https://" all'inizio
+2. C'è uno slash "/" dopo "github.io"
+3. Il nome del repository è tutto maiuscolo: "RACCOLTESANGUE"
+4. C'è uno slash "/" finale alla fine dell'URL
+
+### 📱 Salvare l'app sul telefono
+Dopo aver aperto correttamente l'app:
+- **iPhone:** Safari → Condividi → "Aggiungi a Home"
+- **Android:** Chrome → Menu (⋮) → "Aggiungi a schermata Home"
+
+### 🔐 Ho dimenticato il PIN
+Il PIN predefinito è `000000` (sei zeri). Se l'hai cambiato e dimenticato, usa la funzione "Reset Completo App" nelle impostazioni.
+
 ## 🆘 Supporto
 
 Per problemi o domande, contattare l'amministratore del sistema.
@@ -107,6 +158,7 @@ Uso interno per la gestione delle raccolte sangue.
 
 ---
 
-**Versione**: 1.0.0  
+**Versione**: 3.0.0  
 **Data**: Gennaio 2026  
-**Sviluppato per**: Gestione Autoparco - Raccolte Sangue
+**Sviluppato per**: Gestione Autoparco - Raccolte Sangue  
+**URL App**: https://sicrida-sketch.github.io/RACCOLTESANGUE/

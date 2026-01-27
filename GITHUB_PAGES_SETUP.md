@@ -27,12 +27,12 @@ Questa guida ti aiuterà ad attivare GitHub Pages per rendere l'app accessibile 
 2. Clicca sul pulsante **Save** (Salva)
 
 ### Passo 4: Attendi il Deployment
-1. GitHub mostrerà un messaggio che dice "Your site is being built"
+1. GitHub mostrerà un messaggio che dice che il sito è in costruzione
 2. Attendi 1-2 minuti
 3. Ricarica la pagina
-4. Dovresti vedere un banner verde con il messaggio:
+4. Dovresti vedere un banner verde con il tuo URL:
    ```
-   Your site is published at https://sicrida-sketch.github.io/RACCOLTESANGUE/
+   https://sicrida-sketch.github.io/RACCOLTESANGUE/
    ```
 
 ## 🎉 Fatto!

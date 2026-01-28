@@ -62,6 +62,26 @@ Ogni punto di raccolta contiene:
 - 📂 **Import dati** da file JSON
 - 💿 **Salvataggio automatico** nel browser (localStorage)
 - 📱 **Design responsive** (funziona su mobile, tablet e desktop)
+- ☁️ **Sincronizzazione dati condivisi** (opzionale) - Tutti gli utenti vedono gli stessi dati in tempo reale!
+
+## 🔄 Sincronizzazione Dati Condivisi
+
+### 🎯 Novità! Condividi i Dati tra Tutti gli Utenti
+
+Per impostazione predefinita, ogni utente ha i propri dati salvati localmente. Se vuoi che **tutti gli utenti vedano e modifichino gli stessi dati in tempo reale**, puoi abilitare la sincronizzazione!
+
+**Come funziona:**
+- Quando qualcuno aggiunge un nuovo punto di raccolta, appare immediatamente per tutti
+- Le modifiche sono visibili in tempo reale
+- I dati sono sempre sincronizzati su tutti i dispositivi
+
+**Come attivare:**
+1. Segui la guida completa in [FIREBASE_SETUP.md](FIREBASE_SETUP.md)
+2. Configura Firebase (gratuito, 10 minuti)
+3. Abilita la sincronizzazione nelle Impostazioni dell'app
+4. Tutti gli utenti vedranno gli stessi dati! 🎉
+
+> **Nota**: La sincronizzazione è opzionale. L'app funziona perfettamente anche senza!
 
 ## 🚀 Come Usare
 
@@ -101,11 +121,20 @@ Se preferisci usare l'app offline sul tuo computer:
 
 ## 💾 Gestione Dati
 
+### Modalità Locale (Predefinita)
 I dati vengono salvati automaticamente nel browser (localStorage). Questo significa:
 - ✅ I dati persistono anche dopo la chiusura del browser
 - ✅ Funziona offline dopo il primo caricamento
-- ⚠️ I dati sono salvati localmente sul dispositivo
+- ⚠️ I dati sono salvati localmente sul dispositivo (non condivisi)
 - 💡 Usa Export/Import per fare backup o trasferire dati
+
+### Modalità Condivisa (Opzionale) ☁️
+Abilita la sincronizzazione Firebase per condividere i dati:
+- ✅ Tutti gli utenti vedono gli stessi dati in tempo reale
+- ✅ Le modifiche sono immediatamente visibili a tutti
+- ✅ I dati sono sincronizzati automaticamente
+- ✅ Backup automatico nel cloud
+- 📖 Guida completa: [FIREBASE_SETUP.md](FIREBASE_SETUP.md)
 
 ## 🎨 Design
 

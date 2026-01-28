@@ -2,6 +2,56 @@
 
 Web application per la gestione dei punti di raccolta sangue esterni sparsi nella regione.
 
+## 🚀 Per Sviluppatori: Implementazione e Codice
+
+**Vuoi implementare le modifiche nel tuo codice?** Leggi queste guide:
+
+### 📋 Guide per Implementazione:
+- **[GUIDA_IMPLEMENTAZIONE.md](GUIDA_IMPLEMENTAZIONE.md)** - Guida completa implementazione ⭐
+- **[RIFERIMENTO_FILE.md](RIFERIMENTO_FILE.md)** - Riferimento rapido file modificati
+- **[MAPPA_FILE.md](MAPPA_FILE.md)** - Mappa visuale struttura codice
+
+**Trova rapidamente:**
+- 🔥 Configurazione Firebase: in `app.js` righe 1-12
+- 📄 File modificati: `index.html`, `app.js`, `styles.css`
+- 📖 Come pubblicare: Vedi `GUIDA_IMPLEMENTAZIONE.md`
+
+---
+
+## 📥 Come Scaricare i File
+
+**Vuoi scaricare l'app?** Leggi la guida completa: **[COME_SCARICARE.md](COME_SCARICARE.md)**
+
+Troverai istruzioni per:
+- 🌐 Usare l'app online (CONSIGLIATO - nessun download necessario)
+- 💾 Scaricare tutto come ZIP
+- 📄 Scaricare solo i file necessari
+- 💻 Clonare con Git
+
+## 🌐 Accesso Online
+
+**L'applicazione è disponibile online a questo indirizzo:**
+
+### 👉 [https://sicrida-sketch.github.io/RACCOLTESANGUE/](https://sicrida-sketch.github.io/RACCOLTESANGUE/)
+
+> **Importante:** Assicurati di usare il link esatto con lo slash (/) dopo "github.io" e alla fine dell'URL.
+> 
+> **PIN predefinito:** `000000` (sei zeri)
+
+### 📱 Come salvare l'app sul telefono
+
+#### Su iPhone/iPad:
+1. Apri il link in Safari
+2. Tocca il pulsante "Condividi" (quadrato con freccia)
+3. Scorri verso il basso e tocca "Aggiungi a Home"
+4. Conferma - l'app apparirà nella schermata principale come un'app nativa!
+
+#### Su Android:
+1. Apri il link in Chrome
+2. Tocca il menu (tre puntini)
+3. Seleziona "Aggiungi a schermata Home"
+4. Conferma - l'app apparirà nella schermata principale!
+
 ## ✨ Funzionalità
 
 ### Gestione Punti di Raccolta
@@ -38,10 +88,36 @@ Ogni punto di raccolta contiene:
 - 📂 **Import dati** da file JSON
 - 💿 **Salvataggio automatico** nel browser (localStorage)
 - 📱 **Design responsive** (funziona su mobile, tablet e desktop)
+- ☁️ **Sincronizzazione dati condivisi** (opzionale) - Tutti gli utenti vedono gli stessi dati in tempo reale!
+
+## 🔄 Sincronizzazione Dati Condivisi
+
+### 🎯 Novità! Condividi i Dati tra Tutti gli Utenti
+
+Per impostazione predefinita, ogni utente ha i propri dati salvati localmente. Se vuoi che **tutti gli utenti vedano e modifichino gli stessi dati in tempo reale**, puoi abilitare la sincronizzazione!
+
+**Come funziona:**
+- Quando qualcuno aggiunge un nuovo punto di raccolta, appare immediatamente per tutti
+- Le modifiche sono visibili in tempo reale
+- I dati sono sempre sincronizzati su tutti i dispositivi
+
+**Come attivare:**
+1. Segui la guida completa in [FIREBASE_SETUP.md](FIREBASE_SETUP.md)
+2. Configura Firebase (gratuito, 10 minuti)
+3. Abilita la sincronizzazione nelle Impostazioni dell'app
+4. Tutti gli utenti vedranno gli stessi dati! 🎉
+
+> **Nota**: La sincronizzazione è opzionale. L'app funziona perfettamente anche senza!
 
 ## 🚀 Come Usare
 
-### Installazione
+### Accesso Online (Consigliato) 🌐
+**Usa direttamente l'app online:** [https://sicrida-sketch.github.io/RACCOLTESANGUE/](https://sicrida-sketch.github.io/RACCOLTESANGUE/)
+
+Non serve scaricare nulla! L'app funziona direttamente dal browser e puoi salvarla sulla schermata principale del telefono per un accesso rapido.
+
+### Installazione Locale (Opzionale)
+Se preferisci usare l'app offline sul tuo computer:
 1. Scarica i file: `index.html`, `styles.css`, `app.js`
 2. Metti tutti i file nella stessa cartella
 3. Apri `index.html` con un browser web
@@ -71,11 +147,20 @@ Ogni punto di raccolta contiene:
 
 ## 💾 Gestione Dati
 
+### Modalità Locale (Predefinita)
 I dati vengono salvati automaticamente nel browser (localStorage). Questo significa:
 - ✅ I dati persistono anche dopo la chiusura del browser
 - ✅ Funziona offline dopo il primo caricamento
-- ⚠️ I dati sono salvati localmente sul dispositivo
+- ⚠️ I dati sono salvati localmente sul dispositivo (non condivisi)
 - 💡 Usa Export/Import per fare backup o trasferire dati
+
+### Modalità Condivisa (Opzionale) ☁️
+Abilita la sincronizzazione Firebase per condividere i dati:
+- ✅ Tutti gli utenti vedono gli stessi dati in tempo reale
+- ✅ Le modifiche sono immediatamente visibili a tutti
+- ✅ I dati sono sincronizzati automaticamente
+- ✅ Backup automatico nel cloud
+- 📖 Guida completa: [FIREBASE_SETUP.md](FIREBASE_SETUP.md)
 
 ## 🎨 Design
 
@@ -97,6 +182,27 @@ I dati vengono salvati automaticamente nel browser (localStorage). Questo signif
 - Per grandi quantità di foto, considera di usare un server esterno
 - I dati demo iniziali vengono caricati al primo avvio
 
+## 🆘 Risoluzione Problemi
+
+### ❌ L'app non si apre / errore 404
+**Verifica di usare l'URL corretto:**
+- ✅ Corretto: `https://sicrida-sketch.github.io/RACCOLTESANGUE/`
+- ❌ Sbagliato: `sicrida-sketch.github.io7raccoltesangue` (manca "https://" e lo slash "/" è sostituito con "7")
+
+**Controlla che:**
+1. Hai inserito correttamente "https://" all'inizio
+2. C'è uno slash "/" dopo "github.io"
+3. Il nome del repository è tutto maiuscolo: "RACCOLTESANGUE"
+4. C'è uno slash "/" finale alla fine dell'URL
+
+### 📱 Salvare l'app sul telefono
+Dopo aver aperto correttamente l'app:
+- **iPhone:** Safari → Condividi → "Aggiungi a Home"
+- **Android:** Chrome → Menu (⋮) → "Aggiungi a schermata Home"
+
+### 🔐 Ho dimenticato il PIN
+Il PIN predefinito è `000000` (sei zeri). Se l'hai cambiato e dimenticato, usa la funzione "Reset Completo App" nelle impostazioni.
+
 ## 🆘 Supporto
 
 Per problemi o domande, contattare l'amministratore del sistema.
@@ -107,6 +213,7 @@ Uso interno per la gestione delle raccolte sangue.
 
 ---
 
-**Versione**: 1.0.0  
+**Versione**: 3.0.0  
 **Data**: Gennaio 2026  
-**Sviluppato per**: Gestione Autoparco - Raccolte Sangue
+**Sviluppato per**: Gestione Autoparco - Raccolte Sangue  
+**URL App**: https://sicrida-sketch.github.io/RACCOLTESANGUE/

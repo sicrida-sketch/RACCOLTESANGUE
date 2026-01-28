@@ -2,6 +2,16 @@
 
 Web application per la gestione dei punti di raccolta sangue esterni sparsi nella regione.
 
+## 📥 Come Scaricare i File
+
+**Vuoi scaricare l'app?** Leggi la guida completa: **[COME_SCARICARE.md](COME_SCARICARE.md)**
+
+Troverai istruzioni per:
+- 🌐 Usare l'app online (CONSIGLIATO - nessun download necessario)
+- 💾 Scaricare tutto come ZIP
+- 📄 Scaricare solo i file necessari
+- 💻 Clonare con Git
+
 ## 🌐 Accesso Online
 
 **L'applicazione è disponibile online a questo indirizzo:**

@@ -1,6 +1,6 @@
-// Firebase Configuration
-// IMPORTANT: Replace with your own Firebase project configuration
-// Get this from: Firebase Console > Project Settings > General > Your apps
+// Configurazione Firebase
+// IMPORTANTE: Sostituire con la configurazione del proprio progetto Firebase
+// Ottenerla da: Console Firebase > Impostazioni Progetto > Generale > Le tue app
 const firebaseConfig = {
     apiKey: "AIzaSyBxxx-REPLACE-WITH-YOUR-KEY-xxxxxxxxxx",
     authDomain: "your-project.firebaseapp.com",
@@ -11,39 +11,39 @@ const firebaseConfig = {
     appId: "1:123456789:web:xxxxxxxxxxxxx"
 };
 
-// Storage Keys
+// Chiavi di Storage
 const STORAGE_KEY = 'raccoltaSangueData';
 const PIN_KEY = 'raccoltaSanguePIN';
 const BACKUP_KEY = 'raccoltaSangueLastBackup';
 const FIREBASE_ENABLED_KEY = 'raccoltaSangueFirebaseEnabled';
 
-// Default PIN
+// PIN Predefinito
 const DEFAULT_PIN = '000000';
 
-// Firebase variables
+// Variabili Firebase
 let db = null;
 let dbRef = null;
 let isFirebaseEnabled = false;
 let isFirebaseInitialized = false;
 
-// State
+// Stato
 let punti = [];
 let currentEditId = null;
 let tempFoto = [];
 let currentPin = '';
 let isAuthenticated = false;
 
-// Initialize Firebase
+// Inizializza Firebase
 function initializeFirebase() {
     try {
-        // Check if Firebase config is set (not default)
+        // Controlla se la configurazione Firebase è impostata (non predefinita)
         if (firebaseConfig && firebaseConfig.apiKey && typeof firebaseConfig.apiKey === 'string' && !firebaseConfig.apiKey.includes('REPLACE')) {
             firebase.initializeApp(firebaseConfig);
             db = firebase.database();
             dbRef = db.ref('punti');
             isFirebaseInitialized = true;
             
-            // Check if user wants to use Firebase (from settings)
+            // Controlla se l'utente vuole usare Firebase (dalle impostazioni)
             const firebaseEnabled = localStorage.getItem(FIREBASE_ENABLED_KEY);
             isFirebaseEnabled = firebaseEnabled === 'true';
             
@@ -51,50 +51,50 @@ function initializeFirebase() {
                 setupFirebaseSync();
             }
             
-            console.log('Firebase initialized successfully');
+            console.log('Firebase inizializzato con successo');
         } else {
-            console.log('Firebase not configured - using localStorage only');
+            console.log('Firebase non configurato - uso solo localStorage');
         }
     } catch (error) {
-        console.error('Error initializing Firebase:', error);
+        console.error('Errore inizializzazione Firebase:', error);
         isFirebaseInitialized = false;
         isFirebaseEnabled = false;
     }
 }
 
-// Setup Firebase real-time sync
+// Configura sincronizzazione Firebase in tempo reale
 function setupFirebaseSync() {
     if (!isFirebaseInitialized || !isFirebaseEnabled) return;
     
     dbRef.on('value', (snapshot) => {
         const data = snapshot.val();
         if (data) {
-            // Validate that data is an array
+            // Valida che i dati siano un array
             if (Array.isArray(data)) {
                 punti = data;
-                // Also save to localStorage as cache
+                // Salva anche in localStorage come cache
                 localStorage.setItem(STORAGE_KEY, JSON.stringify(punti));
                 if (isAuthenticated) {
                     renderPunti();
                 }
             } else {
-                console.error('Invalid data format from Firebase - expected array');
+                console.error('Formato dati non valido da Firebase - atteso array');
             }
         }
     });
 }
 
-// Initialize
+// Inizializza
 document.addEventListener('DOMContentLoaded', () => {
     initializeApp();
 });
 
-// Initialize App
+// Inizializza App
 function initializeApp() {
-    // Initialize Firebase first
+    // Inizializza Firebase per primo
     initializeFirebase();
     
-    // Check if PIN exists, if not set default
+    // Controlla se il PIN esiste, altrimenti imposta quello predefinito
     if (!localStorage.getItem(PIN_KEY)) {
         localStorage.setItem(PIN_KEY, DEFAULT_PIN);
     }
@@ -104,7 +104,7 @@ function initializeApp() {
     showPinScreen();
 }
 
-// Show PIN Screen
+// Mostra Schermata PIN
 function showPinScreen() {
     document.getElementById('pinScreen').style.display = 'flex';
     document.getElementById('mainApp').style.display = 'none';
@@ -112,7 +112,7 @@ function showPinScreen() {
     updatePinDots();
 }
 
-// Hide PIN Screen
+// Nascondi Schermata PIN
 function hidePinScreen() {
     document.getElementById('pinScreen').style.display = 'none';
     document.getElementById('mainApp').style.display = 'block';
@@ -121,7 +121,7 @@ function hidePinScreen() {
     updateSettingsInfo();
 }
 
-// Update PIN dots display
+// Aggiorna visualizzazione punti PIN
 function updatePinDots() {
     const dots = document.querySelectorAll('.pin-dot');
     dots.forEach((dot, index) => {
@@ -133,7 +133,7 @@ function updatePinDots() {
     });
 }
 
-// Add PIN digit
+// Aggiungi cifra PIN
 function addPinDigit(digit) {
     if (currentPin.length < 6) {
         currentPin += digit;
@@ -145,7 +145,7 @@ function addPinDigit(digit) {
     }
 }
 
-// Delete PIN digit
+// Elimina cifra PIN
 function deletePinDigit() {
     if (currentPin.length > 0) {
         currentPin = currentPin.slice(0, -1);
@@ -154,7 +154,7 @@ function deletePinDigit() {
     }
 }
 
-// Check PIN
+// Controlla PIN
 function checkPin() {
     const savedPin = localStorage.getItem(PIN_KEY);
     
@@ -171,23 +171,23 @@ function checkPin() {
     }
 }
 
-// Logout
+// Esci
 function logout() {
     isAuthenticated = false;
     currentPin = '';
     showPinScreen();
 }
 
-// Load data from localStorage or Firebase
+// Carica dati da localStorage o Firebase
 async function loadData() {
-    // If Firebase is enabled and initialized, data will come via real-time sync
-    // So we just load from localStorage cache first
+    // Se Firebase è abilitato e inizializzato, i dati arriveranno tramite sincronizzazione in tempo reale
+    // Quindi carichiamo prima dalla cache localStorage
     const saved = localStorage.getItem(STORAGE_KEY);
     if (saved) {
         punti = JSON.parse(saved);
     } else if (!isFirebaseEnabled) {
-        // Only create demo data if Firebase is not enabled
-        // (if Firebase is enabled, we'll wait for sync)
+        // Crea dati demo solo se Firebase non è abilitato
+        // (se Firebase è abilitato, aspetteremo la sincronizzazione)
         punti = [
             {
                 id: generateId(),
@@ -208,46 +208,46 @@ async function loadData() {
     }
 }
 
-// Save data to localStorage and Firebase
+// Salva dati in localStorage e Firebase
 async function saveData() {
-    // Always save to localStorage as cache
+    // Salva sempre in localStorage come cache
     localStorage.setItem(STORAGE_KEY, JSON.stringify(punti));
     
-    // If Firebase is enabled, save to Firebase
+    // Se Firebase è abilitato, salva in Firebase
     if (isFirebaseEnabled && isFirebaseInitialized && dbRef) {
         try {
             await dbRef.set(punti);
-            console.log('Data saved to Firebase');
+            console.log('Dati salvati su Firebase');
         } catch (error) {
-            console.error('Error saving to Firebase:', error);
+            console.error('Errore salvataggio su Firebase:', error);
             showNotification('Errore sincronizzazione: verifica la connessione internet. Dati salvati solo localmente.', 'error');
         }
     }
 }
 
-// Generate unique ID
+// Genera ID univoco
 function generateId() {
     return Date.now().toString(36) + Math.random().toString(36).substr(2);
 }
 
-// Setup Event Listeners
+// Configura Event Listeners
 function setupEventListeners() {
-    // Add button
+    // Pulsante Aggiungi
     document.getElementById('addBtn').addEventListener('click', () => {
         openModal();
     });
 
-    // Search
+    // Ricerca
     document.getElementById('searchInput').addEventListener('input', (e) => {
         renderPunti(e.target.value);
     });
 
-    // Modal close buttons
+    // Pulsanti chiusura modale
     document.querySelectorAll('.close').forEach(btn => {
         btn.addEventListener('click', closeModal);
     });
 
-    // Specific close buttons
+    // Pulsanti chiusura specifici
     document.getElementById('closeDetail').addEventListener('click', () => {
         document.getElementById('detailModal').style.display = 'none';
     });
@@ -256,16 +256,16 @@ function setupEventListeners() {
         document.getElementById('settingsModal').style.display = 'none';
     });
 
-    // Cancel buttons
+    // Pulsanti annulla
     document.getElementById('cancelBtn').addEventListener('click', closeModal);
     document.getElementById('cancelPinChange').addEventListener('click', () => {
         document.getElementById('settingsModal').style.display = 'none';
     });
 
-    // Form submit
+    // Invio form
     document.getElementById('puntoForm').addEventListener('submit', handleSubmit);
 
-    // Photo upload
+    // Caricamento foto
     document.getElementById('fotoInput').addEventListener('change', handlePhotoUpload);
 
     // Export/Import
@@ -275,16 +275,16 @@ function setupEventListeners() {
     });
     document.getElementById('importInput').addEventListener('change', importData);
 
-    // Settings
+    // Impostazioni
     document.getElementById('settingsBtn').addEventListener('click', openSettings);
     
-    // PIN Change Form
+    // Form Cambio PIN
     document.getElementById('pinChangeForm').addEventListener('submit', handlePinChange);
 
-    // Logout
+    // Esci
     document.getElementById('logoutBtn').addEventListener('click', logout);
 
-    // Close modal on outside click
+    // Chiudi modale cliccando fuori
     window.addEventListener('click', (e) => {
         if (e.target.classList.contains('modal')) {
             closeModal();
@@ -292,13 +292,13 @@ function setupEventListeners() {
     });
 }
 
-// Open Settings
+// Apri Impostazioni
 function openSettings() {
     updateSettingsInfo();
     document.getElementById('settingsModal').style.display = 'block';
 }
 
-// Update Settings Info
+// Aggiorna Info Impostazioni
 function updateSettingsInfo() {
     document.getElementById('totalPunti').textContent = punti.length;
     
@@ -310,7 +310,7 @@ function updateSettingsInfo() {
         document.getElementById('lastBackup').textContent = 'Mai eseguito';
     }
     
-    // Update Firebase status
+    // Aggiorna stato Firebase
     const checkbox = document.getElementById('firebaseEnabledCheckbox');
     const statusDiv = document.getElementById('firebaseStatus');
     
@@ -332,7 +332,7 @@ function updateSettingsInfo() {
     }
 }
 
-// Toggle Firebase Sync
+// Attiva/Disattiva Sincronizzazione Firebase
 function toggleFirebaseSync(enabled) {
     if (!isFirebaseInitialized) {
         showNotification('Firebase non è configurato. Segui le istruzioni nelle impostazioni.', 'error');
@@ -344,10 +344,10 @@ function toggleFirebaseSync(enabled) {
     localStorage.setItem(FIREBASE_ENABLED_KEY, enabled.toString());
     
     if (enabled) {
-        // Setup real-time sync
+        // Configura sincronizzazione in tempo reale
         setupFirebaseSync();
         
-        // Upload current local data to Firebase
+        // Carica i dati locali correnti su Firebase
         if (punti.length > 0) {
             if (confirm('Vuoi caricare i dati locali su Firebase per condividerli con tutti gli utenti?')) {
                 saveData();
@@ -357,9 +357,9 @@ function toggleFirebaseSync(enabled) {
         
         showNotification('Sincronizzazione abilitata! I dati saranno condivisi.', 'success');
     } else {
-        // Disable sync
+        // Disabilita sincronizzazione
         if (dbRef) {
-            dbRef.off(); // Stop listening to changes
+            dbRef.off(); // Smetti di ascoltare le modifiche
         }
         showNotification('Sincronizzazione disabilitata. I dati sono ora solo locali.', 'info');
     }
@@ -367,7 +367,7 @@ function toggleFirebaseSync(enabled) {
     updateSettingsInfo();
 }
 
-// Handle PIN Change
+// Gestisci Cambio PIN
 function handlePinChange(e) {
     e.preventDefault();
     
@@ -418,17 +418,17 @@ function resetApp() {
     }
 }
 
-// Get mezzo icon
+// Ottieni icona mezzo
 function getMezzoIcon(tipo) {
     return tipo === 'furgone' ? '🚐' : '🚑';
 }
 
-// Get mezzo label
+// Ottieni etichetta mezzo
 function getMezzoLabel(tipo) {
     return tipo === 'furgone' ? 'Furgone' : 'Autoemoteca';
 }
 
-// Render Punti List
+// Renderizza Lista Punti
 function renderPunti(searchTerm = '') {
     const container = document.getElementById('puntiList');
     const emptyState = document.getElementById('emptyState');
@@ -500,7 +500,7 @@ function renderPunti(searchTerm = '') {
     `).join('');
 }
 
-// Open Modal
+// Apri Modale
 function openModal(editId = null) {
     currentEditId = editId;
     tempFoto = [];
@@ -536,7 +536,7 @@ function openModal(editId = null) {
     modal.style.display = 'block';
 }
 
-// Close Modal
+// Chiudi Modale
 function closeModal() {
     document.getElementById('modal').style.display = 'none';
     document.getElementById('detailModal').style.display = 'none';
@@ -545,7 +545,7 @@ function closeModal() {
     tempFoto = [];
 }
 
-// Handle Photo Upload
+// Gestisci Caricamento Foto
 function handlePhotoUpload(e) {
     const files = Array.from(e.target.files);
     
@@ -565,7 +565,7 @@ function handlePhotoUpload(e) {
     e.target.value = '';
 }
 
-// Render Photo Preview
+// Renderizza Anteprima Foto
 function renderPhotoPreview() {
     const container = document.getElementById('fotoPreview');
     
@@ -579,20 +579,20 @@ function renderPhotoPreview() {
     `).join('');
 }
 
-// Update Photo Description
+// Aggiorna Descrizione Foto
 function updateFotoDescription(index, description) {
     if (tempFoto[index]) {
         tempFoto[index].descrizione = description;
     }
 }
 
-// Remove Photo
+// Rimuovi Foto
 function removeFoto(index) {
     tempFoto.splice(index, 1);
     renderPhotoPreview();
 }
 
-// Handle Form Submit
+// Gestisci Invio Form
 function handleSubmit(e) {
     e.preventDefault();
     
@@ -609,7 +609,7 @@ function handleSubmit(e) {
     };
     
     if (currentEditId) {
-        // Update existing
+        // Aggiorna esistente
         const index = punti.findIndex(p => p.id === currentEditId);
         punti[index] = {
             ...punti[index],
@@ -618,7 +618,7 @@ function handleSubmit(e) {
         };
         showNotification('Punto aggiornato con successo!', 'success');
     } else {
-        // Create new
+        // Crea nuovo
         punti.push({
             id: generateId(),
             ...formData,
@@ -633,12 +633,12 @@ function handleSubmit(e) {
     closeModal();
 }
 
-// Edit Punto
+// Modifica Punto
 function editPunto(id) {
     openModal(id);
 }
 
-// Delete Punto
+// Elimina Punto
 function deletePunto(id) {
     if (confirm('Sei sicuro di voler eliminare questo punto di raccolta?')) {
         punti = punti.filter(p => p.id !== id);
@@ -648,7 +648,7 @@ function deletePunto(id) {
     }
 }
 
-// View Detail
+// Visualizza Dettagli
 function viewDetail(id) {
     const punto = punti.find(p => p.id === id);
     if (!punto) return;
@@ -754,7 +754,7 @@ function viewDetail(id) {
     modal.style.display = 'block';
 }
 
-// Export Data
+// Esporta Dati
 function exportData() {
     const dataStr = JSON.stringify(punti, null, 2);
     const dataBlob = new Blob([dataStr], { type: 'application/json' });
@@ -765,14 +765,14 @@ function exportData() {
     link.click();
     URL.revokeObjectURL(url);
     
-    // Save backup date
+    // Salva data backup
     localStorage.setItem(BACKUP_KEY, new Date().toISOString());
     
     showNotification('Dati esportati con successo!', 'success');
     updateSettingsInfo();
 }
 
-// Import Data
+// Importa Dati
 function importData(e) {
     const file = e.target.files[0];
     if (!file) return;
@@ -802,7 +802,7 @@ function importData(e) {
     e.target.value = '';
 }
 
-// Show Notification
+// Mostra Notifica
 function showNotification(message, type = 'success') {
     const notification = document.createElement('div');
     notification.className = `notification ${type}`;

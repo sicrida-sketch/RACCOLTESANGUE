@@ -186,6 +186,46 @@
             </div>
 
             <div class="settings-section">
+                <h3>☁️ Sincronizzazione Dati Condivisi</h3>
+                <p class="settings-description">Abilita la sincronizzazione per condividere i dati con tutti gli utenti</p>
+                
+                <div class="form-group">
+                    <label>
+                        <input type="checkbox" id="firebaseEnabledCheckbox" onchange="toggleFirebaseSync(this.checked)">
+                        Abilita sincronizzazione dati condivisi
+                    </label>
+                </div>
+                
+                <div id="firebaseStatus" class="info-box"></div>
+                
+                <details>
+                    <summary style="cursor: pointer; margin-top: 15px; font-weight: bold;">📖 Come configurare (clicca per espandere)</summary>
+                    <div style="margin-top: 10px; padding: 10px; background: #f5f5f5; border-radius: 5px;">
+                        <p><strong>Per abilitare la condivisione dati tra tutti gli utenti:</strong></p>
+                        <ol>
+                            <li>Crea un progetto Firebase gratuito su <a href="https://console.firebase.google.com/" target="_blank">console.firebase.google.com</a></li>
+                            <li>Vai in "Realtime Database" e crea un database</li>
+                            <li>Nelle regole del database, usa queste impostazioni:
+                                <pre style="background: #fff; padding: 10px; margin: 10px 0; overflow-x: auto;">{
+  "rules": {
+    "punti": {
+      ".read": true,
+      ".write": true
+    }
+  }
+}</pre>
+                            </li>
+                            <li>Vai in "Impostazioni Progetto" → "Le tue app"</li>
+                            <li>Copia la configurazione Firebase</li>
+                            <li>Modifica il file <code>app.js</code> e sostituisci <code>firebaseConfig</code> con i tuoi valori</li>
+                            <li>Ricarica l'app e abilita la sincronizzazione</li>
+                        </ol>
+                        <p><strong>⚠️ Nota:</strong> Una volta configurato, tutti i dati saranno condivisi tra tutti gli utenti che accedono all'app!</p>
+                    </div>
+                </details>
+            </div>
+
+            <div class="settings-section">
                 <h3>ℹ️ Informazioni App</h3>
                 <div class="info-grid">
                     <div class="info-item">
@@ -215,6 +255,10 @@
         </div>
     </div>
 
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
+    
     <script src="app.js"></script>
 </body>
 </html>

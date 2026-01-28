@@ -1,10 +1,30 @@
+// Firebase Configuration
+// IMPORTANT: Replace with your own Firebase project configuration
+// Get this from: Firebase Console > Project Settings > General > Your apps
+const firebaseConfig = {
+    apiKey: "AIzaSyBxxx-REPLACE-WITH-YOUR-KEY-xxxxxxxxxx",
+    authDomain: "your-project.firebaseapp.com",
+    databaseURL: "https://your-project-default-rtdb.firebaseio.com",
+    projectId: "your-project-id",
+    storageBucket: "your-project.appspot.com",
+    messagingSenderId: "123456789",
+    appId: "1:123456789:web:xxxxxxxxxxxxx"
+};
+
 // Storage Keys
 const STORAGE_KEY = 'raccoltaSangueData';
 const PIN_KEY = 'raccoltaSanguePIN';
 const BACKUP_KEY = 'raccoltaSangueLastBackup';
+const FIREBASE_ENABLED_KEY = 'raccoltaSangueFirebaseEnabled';
 
 // Default PIN
 const DEFAULT_PIN = '000000';
+
+// Firebase variables
+let db = null;
+let dbRef = null;
+let isFirebaseEnabled = false;
+let isFirebaseInitialized = false;
 
 // State
 let punti = [];
@@ -13,6 +33,52 @@ let tempFoto = [];
 let currentPin = '';
 let isAuthenticated = false;
 
+// Initialize Firebase
+function initializeFirebase() {
+    try {
+        // Check if Firebase config is set (not default)
+        if (firebaseConfig.apiKey && !firebaseConfig.apiKey.includes('REPLACE')) {
+            firebase.initializeApp(firebaseConfig);
+            db = firebase.database();
+            dbRef = db.ref('punti');
+            isFirebaseInitialized = true;
+            
+            // Check if user wants to use Firebase (from settings)
+            const firebaseEnabled = localStorage.getItem(FIREBASE_ENABLED_KEY);
+            isFirebaseEnabled = firebaseEnabled === 'true';
+            
+            if (isFirebaseEnabled) {
+                setupFirebaseSync();
+            }
+            
+            console.log('Firebase initialized successfully');
+        } else {
+            console.log('Firebase not configured - using localStorage only');
+        }
+    } catch (error) {
+        console.error('Error initializing Firebase:', error);
+        isFirebaseInitialized = false;
+        isFirebaseEnabled = false;
+    }
+}
+
+// Setup Firebase real-time sync
+function setupFirebaseSync() {
+    if (!isFirebaseInitialized || !isFirebaseEnabled) return;
+    
+    dbRef.on('value', (snapshot) => {
+        const data = snapshot.val();
+        if (data) {
+            punti = data;
+            // Also save to localStorage as cache
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(punti));
+            if (isAuthenticated) {
+                renderPunti();
+            }
+        }
+    });
+}
+
 // Initialize
 document.addEventListener('DOMContentLoaded', () => {
     initializeApp();
@@ -20,6 +86,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Initialize App
 function initializeApp() {
+    // Initialize Firebase first
+    initializeFirebase();
+    
     // Check if PIN exists, if not set default
     if (!localStorage.getItem(PIN_KEY)) {
         localStorage.setItem(PIN_KEY, DEFAULT_PIN);
@@ -104,13 +173,16 @@ function logout() {
     showPinScreen();
 }
 
-// Load data from localStorage
-function loadData() {
+// Load data from localStorage or Firebase
+async function loadData() {
+    // If Firebase is enabled and initialized, data will come via real-time sync
+    // So we just load from localStorage cache first
     const saved = localStorage.getItem(STORAGE_KEY);
     if (saved) {
         punti = JSON.parse(saved);
-    } else {
-        // Dati demo iniziali
+    } else if (!isFirebaseEnabled) {
+        // Only create demo data if Firebase is not enabled
+        // (if Firebase is enabled, we'll wait for sync)
         punti = [
             {
                 id: generateId(),
@@ -131,9 +203,21 @@ function loadData() {
     }
 }
 
-// Save data to localStorage
-function saveData() {
+// Save data to localStorage and Firebase
+async function saveData() {
+    // Always save to localStorage as cache
     localStorage.setItem(STORAGE_KEY, JSON.stringify(punti));
+    
+    // If Firebase is enabled, save to Firebase
+    if (isFirebaseEnabled && isFirebaseInitialized && dbRef) {
+        try {
+            await dbRef.set(punti);
+            console.log('Data saved to Firebase');
+        } catch (error) {
+            console.error('Error saving to Firebase:', error);
+            showNotification('Errore nel salvataggio dati condivisi. Dati salvati solo localmente.', 'error');
+        }
+    }
 }
 
 // Generate unique ID
@@ -220,6 +304,62 @@ function updateSettingsInfo() {
     } else {
         document.getElementById('lastBackup').textContent = 'Mai eseguito';
     }
+    
+    // Update Firebase status
+    const checkbox = document.getElementById('firebaseEnabledCheckbox');
+    const statusDiv = document.getElementById('firebaseStatus');
+    
+    if (checkbox) {
+        checkbox.checked = isFirebaseEnabled;
+    }
+    
+    if (statusDiv) {
+        if (!isFirebaseInitialized) {
+            statusDiv.innerHTML = '<p style="color: #ff9800;">⚠️ Firebase non configurato. Segui le istruzioni sotto per configurarlo.</p>';
+            statusDiv.style.display = 'block';
+        } else if (isFirebaseEnabled) {
+            statusDiv.innerHTML = '<p style="color: #4caf50;">✅ Sincronizzazione attiva - I dati sono condivisi con tutti gli utenti</p>';
+            statusDiv.style.display = 'block';
+        } else {
+            statusDiv.innerHTML = '<p style="color: #666;">🔒 Sincronizzazione disabilitata - I dati sono salvati solo localmente</p>';
+            statusDiv.style.display = 'block';
+        }
+    }
+}
+
+// Toggle Firebase Sync
+function toggleFirebaseSync(enabled) {
+    if (!isFirebaseInitialized) {
+        showNotification('Firebase non è configurato. Segui le istruzioni nelle impostazioni.', 'error');
+        document.getElementById('firebaseEnabledCheckbox').checked = false;
+        return;
+    }
+    
+    isFirebaseEnabled = enabled;
+    localStorage.setItem(FIREBASE_ENABLED_KEY, enabled.toString());
+    
+    if (enabled) {
+        // Setup real-time sync
+        setupFirebaseSync();
+        
+        // Upload current local data to Firebase
+        if (punti.length > 0) {
+            if (confirm('Vuoi caricare i dati locali su Firebase per condividerli con tutti gli utenti?')) {
+                saveData();
+                showNotification('Dati caricati! Ora tutti gli utenti possono vederli.', 'success');
+            }
+        }
+        
+        showNotification('Sincronizzazione abilitata! I dati saranno condivisi.', 'success');
+    } else {
+        // Disable sync
+        if (dbRef) {
+            dbRef.off(); // Stop listening to changes
+        }
+        showNotification('Sincronizzazione disabilitata. I dati sono ora solo locali.', 'info');
+    }
+    
+    updateSettingsInfo();
 }
 
 // Handle PIN Change

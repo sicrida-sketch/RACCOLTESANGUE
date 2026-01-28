@@ -631,6 +631,19 @@ header p {
     border: 2px solid #fecaca;
 }
 
+.info-box {
+    padding: 15px;
+    border-radius: 8px;
+    margin: 15px 0;
+    background: #f0f9ff;
+    border: 1px solid #bfdbfe;
+}
+
+.info-box p {
+    margin: 0;
+    font-size: 0.95em;
+}
+
 /* Detail Modal */
 .detail-header {
     border-bottom: 2px solid #e5e7eb;

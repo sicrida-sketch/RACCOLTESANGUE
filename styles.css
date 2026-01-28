@@ -644,6 +644,18 @@ header p {
     font-size: 0.95em;
 }
 
+.status-warning {
+    color: #ff9800;
+}
+
+.status-success {
+    color: #4caf50;
+}
+
+.status-disabled {
+    color: #666;
+}
+
 /* Detail Modal */
 .detail-header {
     border-bottom: 2px solid #e5e7eb;

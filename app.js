@@ -37,7 +37,7 @@ let isAuthenticated = false;
 function initializeFirebase() {
     try {
         // Check if Firebase config is set (not default)
-        if (firebaseConfig.apiKey && !firebaseConfig.apiKey.includes('REPLACE')) {
+        if (firebaseConfig && firebaseConfig.apiKey && typeof firebaseConfig.apiKey === 'string' && !firebaseConfig.apiKey.includes('REPLACE')) {
             firebase.initializeApp(firebaseConfig);
             db = firebase.database();
             dbRef = db.ref('punti');
@@ -69,11 +69,16 @@ function setupFirebaseSync() {
     dbRef.on('value', (snapshot) => {
         const data = snapshot.val();
         if (data) {
-            punti = data;
-            // Also save to localStorage as cache
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(punti));
-            if (isAuthenticated) {
-                renderPunti();
+            // Validate that data is an array
+            if (Array.isArray(data)) {
+                punti = data;
+                // Also save to localStorage as cache
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(punti));
+                if (isAuthenticated) {
+                    renderPunti();
+                }
+            } else {
+                console.error('Invalid data format from Firebase - expected array');
             }
         }
     });
@@ -215,7 +220,7 @@ async function saveData() {
             console.log('Data saved to Firebase');
         } catch (error) {
             console.error('Error saving to Firebase:', error);
-            showNotification('Errore nel salvataggio dati condivisi. Dati salvati solo localmente.', 'error');
+            showNotification('Errore sincronizzazione: verifica la connessione internet. Dati salvati solo localmente.', 'error');
         }
     }
 }
@@ -315,13 +320,13 @@ function updateSettingsInfo() {
     
     if (statusDiv) {
         if (!isFirebaseInitialized) {
-            statusDiv.innerHTML = '<p style="color: #ff9800;">⚠️ Firebase non configurato. Segui le istruzioni sotto per configurarlo.</p>';
+            statusDiv.innerHTML = '<p class="status-warning">⚠️ Firebase non configurato. Segui le istruzioni sotto per configurarlo.</p>';
             statusDiv.style.display = 'block';
         } else if (isFirebaseEnabled) {
-            statusDiv.innerHTML = '<p style="color: #4caf50;">✅ Sincronizzazione attiva - I dati sono condivisi con tutti gli utenti</p>';
+            statusDiv.innerHTML = '<p class="status-success">✅ Sincronizzazione attiva - I dati sono condivisi con tutti gli utenti</p>';
             statusDiv.style.display = 'block';
         } else {
-            statusDiv.innerHTML = '<p style="color: #666;">🔒 Sincronizzazione disabilitata - I dati sono salvati solo localmente</p>';
+            statusDiv.innerHTML = '<p class="status-disabled">🔒 Sincronizzazione disabilitata - I dati sono salvati solo localmente</p>';
             statusDiv.style.display = 'block';
         }
     }

@@ -46,7 +46,15 @@ Questa guida ti aiuterà a configurare la sincronizzazione dei dati in modo che 
 
 3. Clicca **"Pubblica"** o **"Publish"**
 
-> **⚠️ Nota sulla sicurezza**: Queste regole permettono a chiunque di leggere e scrivere. È semplice ma non sicuro per dati sensibili. Per un ambiente di produzione, considera di implementare l'autenticazione Firebase.
+> **🔴 ATTENZIONE SICUREZZA - IMPORTANTE!**
+> 
+> Queste regole permettono a **CHIUNQUE** in internet di leggere, modificare ed eliminare i tuoi dati **senza alcuna autenticazione**!
+> 
+> - ✅ **OK per test e demo**
+> - ❌ **NON USARE per dati reali o sensibili**
+> - ⚠️ I dati di raccolta sangue possono contenere informazioni sensibili (indirizzi, orari, ecc.)
+> 
+> **Per uso in produzione**, devi implementare l'autenticazione Firebase. Consulta la sezione "Sicurezza" in fondo a questa guida.
 
 ### Passo 4: Ottenere la Configurazione Firebase
 

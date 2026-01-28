@@ -2,6 +2,22 @@
 
 Web application per la gestione dei punti di raccolta sangue esterni sparsi nella regione.
 
+## 🚀 Per Sviluppatori: Implementazione e Codice
+
+**Vuoi implementare le modifiche nel tuo codice?** Leggi queste guide:
+
+### 📋 Guide per Implementazione:
+- **[GUIDA_IMPLEMENTAZIONE.md](GUIDA_IMPLEMENTAZIONE.md)** - Guida completa implementazione ⭐
+- **[RIFERIMENTO_FILE.md](RIFERIMENTO_FILE.md)** - Riferimento rapido file modificati
+- **[MAPPA_FILE.md](MAPPA_FILE.md)** - Mappa visuale struttura codice
+
+**Trova rapidamente:**
+- 🔥 Configurazione Firebase: in `app.js` righe 1-12
+- 📄 File modificati: `index.html`, `app.js`, `styles.css`
+- 📖 Come pubblicare: Vedi `GUIDA_IMPLEMENTAZIONE.md`
+
+---
+
 ## 📥 Come Scaricare i File
 
 **Vuoi scaricare l'app?** Leggi la guida completa: **[COME_SCARICARE.md](COME_SCARICARE.md)**
